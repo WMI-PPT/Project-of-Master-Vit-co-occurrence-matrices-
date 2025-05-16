@@ -1,5 +1,5 @@
 # Project-of-Master-Vit-co-occurrence-matrices-
-1. For the Extract voi:
+1. For the Extract voi.py:
 Description:
 This script extracts 3D Volume of Interest (VOI) regions from the Radiolung dataset using .acsv annotation files. It reads the center coordinates and size from the annotation and crops the corresponding region from the CT scan.
 Input:
@@ -9,7 +9,7 @@ Output:
 Extracted VOI images saved as .nii.gz in the extract_voi/ folder
 (e.g., Paciente_<id>_voi.nii.gz)
 
-2. For the 32 gray levels :
+2. For the 32 gray levels.py :
 Description:
 This script normalizes the gray levels of the VOI images extracted in step 1. It rescales voxel intensity values to a fixed range of 0–31 (32 levels), preparing the data for GLCM extraction.
 Input:
@@ -17,7 +17,7 @@ VOI images from extract_voi/
 Output:
 Gray-level normalized VOI images saved in the normalized_voi/ folder as .nii.gz
 
-3. For the Calculate the co-occurrence matrix :
+3. For the Calculate the co-occurrence matrix.py :
 Description:
 This script computes the GLCM (Gray Level Co-occurrence Matrix) features for each axial slice in the normalized VOIs. It extracts 4-direction GLCMs, flattens them into fixed-length vectors, and saves them in .npz format. A corresponding CSV is also generated for training input.
 Input:
