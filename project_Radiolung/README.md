@@ -30,10 +30,12 @@ glcm_vit_data.csv: A CSV file listing .npz file paths and associated labels (0 f
 3_2. For the Calculate 3D the co-occurrence matrix
 
 ① custom_glcm.py
+
 Extends PyRadiomics RadiomicsGLCM class.
 Overrides _calculateMatrix method to save the raw GLCM matrix (self.glcm_raw_matrix) during feature extraction.
 
 ② extract_glcm_batch.py
+
 Loads VOI and mask pairs from specified directories.
 Extracts GLCM features and raw matrices using CustomGLCM.
 Saves raw GLCM matrix to .npy files.
