@@ -27,5 +27,23 @@ Output:
 .npz files: Each VOI’s GLCM tensor, stored in the co-occurrence matrices/ folder
 glcm_vit_data.csv: A CSV file listing .npz file paths and associated labels (0 for benign, 1 for malignant)
 
-3_2. For the Calculate 3D the co-occurrence matrix.py
-This repository provides a simple Python script to extract 3D Gray-Level Co-occurrence Matrix (GLCM) features from volumetric VOI (Volume of Interest) data stored in .nii.gz files. The script uses nibabel to load 3D medical image volumes in NIfTI format, quantizes grayscale values into a fixed number of levels (default is 32), and computes 3D GLCMs in 13 spatial directions to capture texture relationships. The normalized GLCM tensor is then saved as a compressed .npz file for further analysis. The script requires Python 3.7+ and the libraries numpy and nibabel, which can be installed via pip install numpy nibabel. To use, prepare your input .nii.gz VOI file, modify the input/output paths in the script or call the main(input_path, output_path) function directly, and run the script. The output is a .npz file containing a 3D GLCM tensor of shape (num_levels, num_levels, 13), where num_levels is the number of quantization levels (default 32) and 13 is the number of 3D directions. The current implementation uses simple nested loops and may be slow on large volumes; future improvements could include vectorization or parallelization for better performance.
+3_2. For the Calculate 3D the co-occurrence matrix
+
+① custom_glcm.py
+Extends PyRadiomics RadiomicsGLCM class.
+Overrides _calculateMatrix method to save the raw GLCM matrix (self.glcm_raw_matrix) during feature extraction.
+
+② extract_glcm_batch.py
+Loads VOI and mask pairs from specified directories.
+Extracts GLCM features and raw matrices using CustomGLCM.
+Saves raw GLCM matrix to .npy files.
+Generates a summary CSV for all processed data.
+
+These two codes are based on PyRadiomics and implement a custom extraction of 3D gray-level co-occurrence matrix (GLCM) features. They support extracting the raw GLCM matrix from 3D medical images and batch processing multiple volumes of interest (VOIs) along with their corresponding masks.
+They inherit PyRadiomics’ GLCM class and extend it to extract and save the raw GLCM matrix.
+Support batch processing of VOI and mask files in NIfTI format.
+Save the extracted raw GLCM matrices as .npy files for convenient further analysis.
+Automatically generate an index CSV file that contains paths and results for all processed files.
+Support 3D GLCM extraction, with the option to switch between 2D or 3D modes as needed.
+All output results have the shape (1, 32, 32, 13), where 1 represents the distance, 32 is the number of gray levels, and 13 corresponds to the 13 directions.
+
