@@ -47,5 +47,5 @@ Support batch processing of VOI and mask files in NIfTI format.
 Save the extracted raw GLCM matrices as .npy files for convenient further analysis.
 Automatically generate an index CSV file that contains paths and results for all processed files.
 Support 3D GLCM extraction, with the option to switch between 2D or 3D modes as needed.
-All output results have the shape (1, 32, 32, 13), where 1 represents the distance, 32 is the number of gray levels, and 13 corresponds to the 13 directions.
+All output results have the shape (13，32，32), where 32 is the number of gray levels, and 13 corresponds to the 13 directions.
 
