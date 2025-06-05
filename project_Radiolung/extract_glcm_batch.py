@@ -28,9 +28,7 @@ voi_files = sorted(voi_files)
 records = []
 
 for voi_path in voi_files:
-    # Parse corresponding MASK file path based on VOI file name
     base_name = os.path.basename(voi_path)
-    # Example: Paciente_1_TC_9_R_1_VOI.nii.gz -> Paciente_1_TC_9_R_1_mask.nii.gz
     base_id = base_name.replace("_VOI.nii.gz", "")
     mask_name = base_id + "_mask.nii.gz"
     mask_path = os.path.join(mask_dir, mask_name)
@@ -48,14 +46,17 @@ for voi_path in voi_files:
         extractor = CustomGLCM(image, mask, **params)
         extractor.enableAllFeatures()
 
-        features = extractor.execute()  # Must capture the return value, don't treat as bool
-        # Debug print to confirm features output
-        print(f"Features keys: {list(features.keys())[:5]} ...")
+        features = extractor.execute()
 
         glcm = extractor.glcm_raw_matrix
         if glcm is None:
             print(f"❌ GLCM matrix not calculated for {base_id}, skipping.")
             continue
+
+        # Remove first dimension: (1, 32, 32, 13) → (32, 32, 13)
+        glcm = np.squeeze(glcm, axis=0)
+        # Transpose to (13, 32, 32) for ViT
+        glcm = np.transpose(glcm, (2, 0, 1))
 
         print(f"GLCM shape for {base_id}: {glcm.shape}")
 
@@ -80,3 +81,4 @@ df = pd.DataFrame(records)
 csv_path = os.path.join(output_dir, "glcm_index.csv")
 df.to_csv(csv_path, index=False)
 print(f"\n📄 Done! Index CSV saved to: {csv_path}")
+
